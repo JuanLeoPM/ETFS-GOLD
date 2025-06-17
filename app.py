@@ -13,9 +13,16 @@ st.set_page_config(page_title="Gold ETF Price Predictor", layout="wide")
 st.title("📈 Gold ETF Price Prediction App")
 
 # Entrada del usuario
-ticker = st.text_input("Enter Gold ETF Ticker (e.g., GLD, IAU):", value="GLD")
-start_date = st.date_input("Start Date", value=datetime(2010, 1, 1))
-end_date = st.date_input("End Date", value=datetime.today())
+min_date = datetime(2010, 1, 1)
+max_date = datetime(2025, 12, 31)
+
+start_date = st.date_input("Start Date", value=min_date, min_value=min_date, max_value=max_date)
+end_date = st.date_input("End Date", value=max_date, min_value=min_date, max_value=max_date)
+
+if start_date >= end_date:
+    st.error("End date must be after start date.")
+    st.stop()
+
 
 # Descargar datos
 @st.cache_data
